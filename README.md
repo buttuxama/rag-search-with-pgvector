@@ -1,4 +1,4 @@
-# Vector Search with PostgreSQL and pgvector
+# RAG Vector Search with PostgreSQL and pgvector
 
 This project implements the vector-search lesson using PostgreSQL and
 pgvector. The Python modules contain the application logic; the notebook is
