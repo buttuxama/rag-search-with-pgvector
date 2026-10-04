@@ -4,6 +4,46 @@ This project implements the vector-search lesson using PostgreSQL and
 pgvector. The Python modules contain the application logic; the notebook is
 only a demonstration client.
 
+## Project overview
+
+This project is a production-oriented semantic search and retrieval-augmented
+generation (RAG) application built around the DataTalksClub FAQ dataset. It
+demonstrates how to move from a notebook-based vector-search experiment to a
+reusable application structure where ingestion, embedding generation,
+database access, retrieval, and answer generation are separated into
+independent modules.
+
+The application downloads FAQ documents, combines each question with its
+answer, and converts the resulting text into 384-dimensional embeddings using
+the `all-MiniLM-L6-v2` Sentence Transformer model. The documents and
+embeddings are stored in PostgreSQL using the `pgvector` extension. An HNSW
+index with cosine-distance operators provides efficient approximate nearest
+neighbor search.
+
+For a user query, the same embedding model creates a query vector. The
+application searches PostgreSQL for the most similar FAQ entries, filters
+results by course, and builds a context from the retrieved documents. That
+context is passed to an Ollama Cloud model through its OpenAI-compatible API,
+which generates an answer grounded in the retrieved FAQ content.
+
+The implementation is organized so that the notebook contains only an
+interactive demonstration. The operational logic lives in Python modules and
+the ingestion workflow is exposed through the `ingest-pgvector` command. This
+makes the same retrieval code reusable from a notebook, script, or future
+application service.
+
+### What this project demonstrates
+
+- Downloading and preparing FAQ data for semantic search.
+- Generating document embeddings in batches.
+- Persisting embeddings in PostgreSQL with `pgvector`.
+- Creating an HNSW index for cosine similarity search.
+- Filtering vector-search results by course.
+- Separating ingestion from query-time retrieval.
+- Building RAG context and prompts from retrieved documents.
+- Calling an Ollama-compatible LLM through the OpenAI Python client.
+- Keeping notebooks focused on demonstrations rather than application logic.
+
 ## Requirements
 
 - Python 3.14
